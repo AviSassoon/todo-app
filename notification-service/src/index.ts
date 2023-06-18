@@ -1,4 +1,6 @@
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 import axios from 'axios';
 import cron from 'node-cron';
 
@@ -8,7 +10,7 @@ const PORT = process.env.PORT || 3001;
 cron.schedule('0 9 * * *', async () => {
   try {
     const { data: todos } = await axios.get(
-      'http://localhost:3000/todos/upcoming'
+      process.env.TODO_SERVICE_URL + '/todos/upcoming'
     );
     console.log(todos);
 
