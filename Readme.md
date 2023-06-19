@@ -24,6 +24,7 @@ To run the Todo Service, follow these steps:
 1. Navigate to the `todo-service` directory.
 2. Install the dependencies with `npm install`.
 3. Start the service with `npm run dev` for development mode. You can also build the TypeScript files and start the service in production mode with `npm run build` and `npm start`.
+4. To run the tests, execute: `npm run jest`
 
 ### Notification Service
 

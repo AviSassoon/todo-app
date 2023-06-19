@@ -27,6 +27,6 @@ describe('Todo Controller', () => {
 
   it('should get all upcoming todos', () => {
     const controller = new TodoController();
-    controller.getUpcomingTodos({} as any, { json: jest.fn() } as any);
+    controller.getTodos({} as any, { json: jest.fn() } as any);
   });
 });
