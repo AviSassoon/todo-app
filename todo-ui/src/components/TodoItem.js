@@ -5,6 +5,7 @@ function TodoItem({ todo }) {
       <p>{todo.description}</p>
       <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
       <p>Status: {todo.completed ? 'Completed' : 'Not completed'}</p>
+      <p> Id: {todo._id}</p>
     </div>
   );
 }
