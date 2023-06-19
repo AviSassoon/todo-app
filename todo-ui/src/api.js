@@ -20,7 +20,6 @@ const deleteTodoById = async (id) => {
   const response = await axios.delete(
     `${process.env.REACT_APP_TODO_SERVICE_URL}/todos/${id}`
   );
-  console.log(response.data);
   return response.data;
 };
 

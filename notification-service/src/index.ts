@@ -13,14 +13,11 @@ cron.schedule(DAILY_NINE_AM_CRON, async () => {
     const { data: todos } = await axios.get(
       process.env.TODO_SERVICE_URL + '/todos/upcoming'
     );
-    console.log(todos);
 
     for (const todo of todos) {
       sendNotification(`Your task "${todo.title}" is due tomorrow.`);
     }
   } catch (error: any) {
-    console.log(error);
-
     console.error(`Failed to send notifications: ${error.message}`);
   }
 });
