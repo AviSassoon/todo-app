@@ -62,21 +62,37 @@ export class TodoController {
 
   async updateTodoById(req: Request, res: Response) {
     try {
-      const id = req.params.id;
-      const updates = req.body;
+      const { id } = req.params;
+      const { title, description, deadline, completed } = req.body;
 
-      const updateTodo = await DbTodo.findByIdAndUpdate(id, updates, {
-        new: true,
-      });
+      const isValidUpdate = this.assertValidTodo(req);
 
-      if (updateTodo) {
-        return res.json(updateTodo);
+      if (!isValidUpdate) {
+        return res
+          .status(HttpStatusCode.BAD_REQUEST)
+          .json({ error: 'Invalid update fields.' });
+      }
+
+      const updatedTodo = await DbTodo.findByIdAndUpdate(
+        id,
+        { title, description, deadline, completed },
+        { new: true }
+      );
+
+      if (updatedTodo) {
+        return res.json(updatedTodo);
       }
 
       res.status(HttpStatusCode.NOT_FOUND).json('Todo not found');
     } catch (error) {
       res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
     }
+  }
+
+  assertValidTodo(req: Request) {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['title', 'description', 'deadline', 'completed'];
+    return updates.every((update) => allowedUpdates.includes(update));
   }
 
   async deleteTodoById(req: Request, res: Response) {

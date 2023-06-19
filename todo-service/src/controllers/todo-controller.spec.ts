@@ -1,32 +1,40 @@
 import { TodoController } from './todo.controller';
 
-describe('Todo Controller', () => {
-  beforeAll(() => {
-    jest.resetAllMocks();
-    jest.mock('../models/todo.model', () => ({
-      DbTodo: {
-        find: jest.fn().mockResolvedValue([
-          {
-            _id: '1',
-            title: 'Test Todo',
-            description: 'Test Todo Description',
-            deadline: new Date('2022-01-01T00:00:00.000Z'),
-            completed: false,
-          },
-          {
-            _id: '22',
-            title: 'Clean the house',
-            description: 'Clean the house Description',
-            deadline: new Date('2022-01-03T12:00:00.000Z'),
-            completed: true,
-          },
-        ]),
+describe('assertValidTodo', () => {
+  it('should be valid todo to update', () => {
+    const todoController = new TodoController();
+    const req = {
+      body: {
+        title: 'title',
+        description: 'description',
       },
-    }));
+    } as any;
+    const isValidTodo = todoController.assertValidTodo(req);
+    expect(isValidTodo).toBeTruthy();
   });
 
-  it('should get all upcoming todos', () => {
-    const controller = new TodoController();
-    controller.getTodos({} as any, { json: jest.fn() } as any);
+  it('should be invalid todo to update - unknown prop', () => {
+    const todoController = new TodoController();
+    const req = {
+      body: {
+        newTitle: 'title',
+        description: 'description',
+      },
+    } as any;
+
+    const isValidTodo = todoController.assertValidTodo(req);
+    expect(isValidTodo).toBeFalsy();
+  });
+
+  it('should be invalid todo to update - forbidden prop ', () => {
+    const todoController = new TodoController();
+    const req = {
+      body: {
+        _id: '1223',
+      },
+    } as any;
+
+    const isValidTodo = todoController.assertValidTodo(req);
+    expect(isValidTodo).toBeFalsy();
   });
 });
