@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { DbTodo } from '../models/todo.model';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
-import { isWithinNext24Hours } from '../utils/date.utils';
 
+const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export class TodoController {
   async getTodos(req: Request, res: Response) {
     try {
@@ -26,12 +26,19 @@ export class TodoController {
 
   async getUpcomingTodos(req: Request, res: Response) {
     try {
-      const uncompletedTasks = await DbTodo.find({ completed: false });
-      const now = new Date();
-
-      const upcomingTasks = uncompletedTasks.filter(
-        (task) => !isWithinNext24Hours(now, task.deadline)
-      );
+      const upcomingTasks = await DbTodo.aggregate([
+        { $match: { completed: false } },
+        {
+          $addFields: {
+            msDifference: { $subtract: ['$$NOW', '$deadline'] },
+          },
+        },
+        {
+          $match: {
+            msDifference: { $gte: -1 * ONE_DAY_IN_MILLISECONDS },
+          },
+        },
+      ]);
 
       res.json(upcomingTasks);
     } catch (error) {
@@ -42,7 +49,7 @@ export class TodoController {
   async createTodo(req: Request, res: Response) {
     try {
       const todo = await DbTodo.create(req.body);
-      res.json(todo);
+      res.status(HttpStatusCode.CREATED).json(todo);
     } catch (error) {
       res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
     }
