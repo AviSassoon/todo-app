@@ -7,7 +7,8 @@ import cron from 'node-cron';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-cron.schedule('0 9 * * *', async () => {
+const DAILY_NINE_AM_CRON = '0 9 * * *';
+cron.schedule(DAILY_NINE_AM_CRON, async () => {
   try {
     const { data: todos } = await axios.get(
       process.env.TODO_SERVICE_URL + '/todos/upcoming'
