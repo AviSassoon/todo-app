@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TodosList from './components/TodosList';
-import { fetchTodos, fetchTodoById } from './api';
+import { fetchTodos, fetchTodoById, deleteTodoById } from './api';
 import TodoItem from './components/TodoItem';
 
 function App() {
@@ -17,6 +17,13 @@ function App() {
   const handleFetchById = async () => {
     const todo = await fetchTodoById(todoId);
     setSingleTodo(todo);
+    setTodoId('');
+  };
+
+  const handleDeleteById = async () => {
+    const { _id } = await deleteTodoById(todoId);
+    setTodos(todos.filter((todo) => todo._id !== _id));
+    setTodoId('');
   };
 
   const handleIdChange = (event) => {
@@ -35,6 +42,7 @@ function App() {
           placeholder="Enter Todo ID"
         />
         <button onClick={handleFetchById}>Fetch Todo by ID</button>
+        <button onClick={handleDeleteById}>Delete Todo by ID</button>
       </div>
 
       {singleTodo ? (
