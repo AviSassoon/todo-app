@@ -38,6 +38,11 @@ export class TodoController {
             msDifference: { $gte: -1 * ONE_DAY_IN_MILLISECONDS },
           },
         },
+        {
+          $project: {
+            msDifference: 0,
+          },
+        },
       ]);
 
       res.json(upcomingTasks);
