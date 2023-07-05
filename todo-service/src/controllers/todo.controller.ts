@@ -22,6 +22,10 @@ export class TodoController {
       const id = req.params.id;
       const todo = await Todo.findById(id);
 
+      if (!todo) {
+        throw new TodoNotFoundError();
+      }
+
       res.json(todo);
     } catch (error) {
       next(error);
