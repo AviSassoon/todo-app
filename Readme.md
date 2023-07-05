@@ -46,3 +46,14 @@ The following assumptions are made for running the TODO App system:
   Todo Service (e.g., http://localhost:3000).
 
 - **Todo UI**: Similarly, if you want to run the `todo-ui` locally without Docker, you need to define the `REACT_APP_TODO_SERVICE_URL` environment variable in a `.env` file located in the `todo-ui` directory. Set the variable value to the base URL of the Todo Service (e.g., http://localhost:3000).
+
+## Postman Collection
+
+To quickly test and interact with the API, you can use the provided Postman collection. The collection file is located in the `postman` directory of this repository.
+
+### Importing the Collection
+
+1. Download and install [Postman](https://www.postman.com/downloads/), if you haven't already.
+2. Open Postman and click on "Import" to import the collection.
+3. Select the collection file (`todo-postman-collection.json`) from the `postman` directory.
+4. Once imported, you should see the collection in the left sidebar of Postman.

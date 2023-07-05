@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import './db/mongoose';
 import todoRouter from './routers/todo.router';
-import { HttpStatusCode } from './utils/http-status-code.enum';
+import { errorHandler } from './middlewares/error-handler';
+import { NotFoundError } from './errors/not-found-error';
 
 const app = express();
 app.use(express.json());
@@ -13,10 +14,11 @@ app.use(todoRouter);
 
 const port = process.env.PORT || 3000;
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(HttpStatusCode.INTERNAL_SERVER).json('Something went wrong!');
+app.all('*', async (req: Request, res: Response, next: NextFunction) => {
+  next(new NotFoundError());
 });
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running at port: ${port}`);

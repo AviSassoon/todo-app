@@ -1,30 +1,38 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { Todo } from '../models/todo.model';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
+import { TodoNotFoundError } from '../errors/todo-not-found-error';
+import { validateRequest } from '../middlewares/validate-request';
 
 const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export class TodoController {
-  async getTodos(req: Request, res: Response) {
+  static async getTodos(req: Request, res: Response, next: NextFunction) {
     try {
+      validateRequest(req);
       const todos = await Todo.find();
+
       res.json(todos);
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 
-  async getTodoById(req: Request, res: Response) {
+  static async getTodoById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const todo = await Todo.findById(id);
 
       res.json(todo);
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 
-  async getUpcomingTodos(req: Request, res: Response) {
+  static async getUpcomingTodos(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const upcomingTasks = await Todo.aggregate([
         { $match: { completed: false } },
@@ -47,28 +55,30 @@ export class TodoController {
 
       res.json(upcomingTasks);
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 
-  async createTodo(req: Request, res: Response) {
+  static async createTodo(req: Request, res: Response, next: NextFunction) {
     try {
+      validateRequest(req);
+
       const { title, description, deadline, completed } = req.body;
       const todo = Todo.build({ title, description, deadline, completed });
       await todo.save();
 
       res.status(HttpStatusCode.CREATED).json(todo);
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 
-  async updateTodoById(req: Request, res: Response) {
+  static async updateTodoById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const { title, description, deadline, completed } = req.body;
 
-      const isValidUpdate = this.assertValidTodo(req);
+      const isValidUpdate = TodoController.assertValidTodo(req);
 
       if (!isValidUpdate) {
         return res
@@ -88,28 +98,30 @@ export class TodoController {
 
       res.status(HttpStatusCode.NOT_FOUND).json('Todo not found');
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 
-  assertValidTodo(req: Request) {
+  static assertValidTodo(req: Request) {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['title', 'description', 'deadline', 'completed'];
     return updates.every((update) => allowedUpdates.includes(update));
   }
 
-  async deleteTodoById(req: Request, res: Response) {
+  static async deleteTodoById(req: Request, res: Response, next: NextFunction) {
     try {
+      validateRequest(req);
+
       const id = req.params.id;
       const deletedTodo = await Todo.findByIdAndDelete(id);
 
       if (!deletedTodo) {
-        return res.status(HttpStatusCode.NOT_FOUND).json('Todo not found');
+        throw new TodoNotFoundError();
       }
 
       res.json(deletedTodo);
     } catch (error) {
-      res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
+      next(error);
     }
   }
 }
