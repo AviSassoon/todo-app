@@ -1,141 +1,112 @@
 {
-	"info": {
-		"_postman_id": "5708a91b-423e-4a06-8e21-358a304cd4c3",
-		"name": "TODO",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9993952"
-	},
-	"item": [
-		{
-			"name": "get all todos",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/todos",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get upcoming todos",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/todos/upcoming",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos",
-						"upcoming"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create todo",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"title\": \"Buy food\",\r\n  \"description\": \"go buy some food at the supermarket\",\r\n  \"deadline\": \"2023-07-06T12:00:00Z\",\r\n  \"completed\": false\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:3000/todos/64907eac55291bbf25f02da6",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos",
-						"64907eac55291bbf25f02da6"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get todo by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/todos/648f678a44ee69a4119157af",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos",
-						"648f678a44ee69a4119157af"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update todo",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"title\": \"Clean\",\r\n  \"description\": \"need to clean the house\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:3000/todos/648f678a44ee69a4119157af",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos",
-						"648f678a44ee69a4119157af"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete todo",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/todos/648f729b779f494024e212c9",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"todos",
-						"648f729b779f494024e212c9"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "5708a91b-423e-4a06-8e21-358a304cd4c3",
+    "name": "TODO",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9993952"
+  },
+  "item": [
+    {
+      "name": "get all todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/todos",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get upcoming todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/todos/upcoming",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos", "upcoming"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create todo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Workout\",\r\n  \"description\": \"rum 5 km\",\r\n  \"deadline\": \"2023-07-06T12:00:00Z\",\r\n  \"completed\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/todos",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get todo by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/todos/648f678a44ee69a4119157af",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos", "648f678a44ee69a4119157af"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update todo",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Clean\",\r\n  \"description\": \"need to clean the house\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/todos/648f678a44ee69a4119157af",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos", "648f678a44ee69a4119157af"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete todo",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/todos/648f729b779f494024e212c9",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["todos", "648f729b779f494024e212c9"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
