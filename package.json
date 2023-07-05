@@ -1,0 +1,13 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "A TODO application with a notification service, composed of todo-service, notification-service and todo-ui. The application is containerized using Docker and orchestrated with docker-compose.",
+  "scripts": {
+    "start": "docker-compose up",
+    "stop": "docker-compose down",
+    "build": "docker-compose build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,6 +1,6 @@
 # TODO App
 
-This repository contains two microservices as part of the TODO App system:
+This repository contains two backend services and a frontend application that constitute the TODO App system:
 
 1. **Todo Service**: This is the core service that manages all the CRUD operations of TODOs. It provides APIs to create, update, read, and delete TODOs.
 
@@ -8,7 +8,7 @@ This repository contains two microservices as part of the TODO App system:
 
 3. **Todo UI**: This is a React application that serves as the client-facing component. It consumes the APIs provided by the Todo Service to perform CRUD operations and display data to users.
 
-Both services are written in TypeScript and run on Node.js. They use Express for managing HTTP requests, and the `dotenv` library for managing environment variables.
+These components are written in TypeScript and Javascript, running on Node.js. They use Express for managing HTTP requests, and the `dotenv` library for managing environment variables.
 
 ## Prerequisites
 
@@ -16,36 +16,33 @@ Before you start, make sure you have the following installed:
 
 - Node.js
 - npm
+- Docker
+- Docker Compose
 
 ## Running the Services and UI
 
-### Todo Service
+I provide a Docker Compose configuration for running the entire application with a single command. Here are the steps:
 
-To run the Todo Service, follow these steps:
+1. In your terminal, navigate to the root of this repository (where the `docker-compose.yml` file is located).
+2. Run `npm start`. This command will start Docker Compose, which will build and run containers for each service and the UI.
 
-1. Navigate to the `todo-service` directory.
-2. Install the dependencies with `npm install`.
-3. Start the service with `npm run dev` for development mode. You can also build the TypeScript files and start the service in production mode with `npm run build` and `npm start`.
-4. To run the tests, execute: `npm run jest`
+The services will be accessible at the following ports by default:
 
-### Notification Service
+- Todo Service: 3000
+- Notification Service: 3001
+- Todo UI: 4000
 
-To run the Notification Service, follow these steps:
-
-1. Navigate to the `notification-service` directory.
-2. Install the dependencies with `npm install`.
-3. Start the service with `npm run dev` for development mode. You can also build the TypeScript files and start the service in production mode with `npm run build` and `npm start`.
-
-### Todo UI
-
-To run the Notification Service, follow these steps:
-
-1. Navigate to the `todo-ui` directory.
-2. Install the dependencies with `npm install`.
-3. Start the service with `npm start`.
+To stop and shut down the running containers, you can use the following command: `npm stop`
 
 ## Assumptions
 
-1. You have a MongoDB instance running for the Todo Service to connect to. The connection string should be provided in a `.env` file in the `todo-service` directory, under the variable `DB_URL`.
-2. The Notification Service makes requests to the Todo Service to fetch TODOs. The base URL for these requests should be provided in a `.env` file in the `notification-service` directory, under the variable `TODO_SERVICE_URL`.
-3. The Todo UI makes requests to the Todo Service to fetch and manipulate TODOs. The base URL for these requests should be provided in a `.env` file in the todo-ui directory, under the variable `REACT_APP_TODO_SERVICE_URL`.
+The following assumptions are made for running the TODO App system:
+
+1. **Running with Docker**: If you are running the system with Docker using the provided docker-compose.yml file, you don't need to make any additional changes. The services and UI will be automatically configured to communicate with each other within the Docker network.
+
+2. **Running Locally without Docker**:
+
+- **Notification Service**: If you choose to run the `notification-service` locally without Docker, you need to define the `TODO_SERVICE_URL` environment variable in a `.env` file located in the `notification-service` directory. Set the variable value to the base URL of the
+  Todo Service (e.g., http://localhost:3000).
+
+- **Todo UI**: Similarly, if you want to run the `todo-ui` locally without Docker, you need to define the `REACT_APP_TODO_SERVICE_URL` environment variable in a `.env` file located in the `todo-ui` directory. Set the variable value to the base URL of the Todo Service (e.g., http://localhost:3000).

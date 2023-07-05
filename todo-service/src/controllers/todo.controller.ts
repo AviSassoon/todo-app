@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { DbTodo } from '../models/todo.model';
+import { Todo } from '../models/todo.model';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
 
 const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export class TodoController {
   async getTodos(req: Request, res: Response) {
     try {
-      const todos = await DbTodo.find();
+      const todos = await Todo.find();
       res.json(todos);
     } catch (error) {
       res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
@@ -16,7 +16,7 @@ export class TodoController {
   async getTodoById(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const todo = await DbTodo.findById(id);
+      const todo = await Todo.findById(id);
 
       res.json(todo);
     } catch (error) {
@@ -26,7 +26,7 @@ export class TodoController {
 
   async getUpcomingTodos(req: Request, res: Response) {
     try {
-      const upcomingTasks = await DbTodo.aggregate([
+      const upcomingTasks = await Todo.aggregate([
         { $match: { completed: false } },
         {
           $addFields: {
@@ -53,7 +53,10 @@ export class TodoController {
 
   async createTodo(req: Request, res: Response) {
     try {
-      const todo = await DbTodo.create(req.body);
+      const { title, description, deadline, completed } = req.body;
+      const todo = Todo.build({ title, description, deadline, completed });
+      await todo.save();
+
       res.status(HttpStatusCode.CREATED).json(todo);
     } catch (error) {
       res.status(HttpStatusCode.INTERNAL_SERVER).json(error);
@@ -73,7 +76,7 @@ export class TodoController {
           .json({ error: 'Invalid update fields.' });
       }
 
-      const updatedTodo = await DbTodo.findByIdAndUpdate(
+      const updatedTodo = await Todo.findByIdAndUpdate(
         id,
         { title, description, deadline, completed },
         { new: true }
@@ -98,7 +101,7 @@ export class TodoController {
   async deleteTodoById(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const deletedTodo = await DbTodo.findByIdAndDelete(id);
+      const deletedTodo = await Todo.findByIdAndDelete(id);
 
       if (!deletedTodo) {
         return res.status(HttpStatusCode.NOT_FOUND).json('Todo not found');

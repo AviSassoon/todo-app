@@ -1,0 +1,34 @@
+version: '3'
+services:
+  todo-service:
+    build: ./todo-service
+    volumes:
+      - ./todo-service:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_URL=mongodb://mongodb:27017/notes
+  notification-service:
+    build: ./notification-service
+    volumes:
+      - ./notification-service:/app
+    ports:
+      - "3001:3001"
+    environment:
+    - PORT=3001
+    - TODO_SERVICE_URL=http://todo-service:3000
+  todo-ui:
+    build: ./todo-ui
+    volumes:
+      - ./todo-ui:/app
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data: # <- This volume is used for persisting your database

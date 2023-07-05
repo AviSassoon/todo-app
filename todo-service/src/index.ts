@@ -14,7 +14,7 @@ app.use(todoRouter);
 const port = process.env.PORT || 3000;
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
+  console.error(err);
   res.status(HttpStatusCode.INTERNAL_SERVER).json('Something went wrong!');
 });
 
