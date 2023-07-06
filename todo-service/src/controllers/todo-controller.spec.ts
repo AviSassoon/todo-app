@@ -2,14 +2,13 @@ import { TodoController } from './todo.controller';
 
 describe('assertValidTodo', () => {
   it('should be valid todo to update', () => {
-    const todoController = new TodoController();
     const req = {
       body: {
         title: 'title',
         description: 'description',
       },
     } as any;
-    const isValidTodo = todoController.assertValidTodo(req);
+    const isValidTodo = TodoController.assertValidTodo(req);
     expect(isValidTodo).toBeTruthy();
   });
 
@@ -22,7 +21,7 @@ describe('assertValidTodo', () => {
       },
     } as any;
 
-    const isValidTodo = todoController.assertValidTodo(req);
+    const isValidTodo = TodoController.assertValidTodo(req);
     expect(isValidTodo).toBeFalsy();
   });
 
@@ -34,7 +33,7 @@ describe('assertValidTodo', () => {
       },
     } as any;
 
-    const isValidTodo = todoController.assertValidTodo(req);
+    const isValidTodo = TodoController.assertValidTodo(req);
     expect(isValidTodo).toBeFalsy();
   });
 });
