@@ -2,13 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { Todo } from '../models/todo.model';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
 import { TodoNotFoundError } from '../errors/todo-not-found-error';
-import { validateRequest } from '../middlewares/validate-request';
 
 const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export class TodoController {
   static async getTodos(req: Request, res: Response, next: NextFunction) {
     try {
-      validateRequest(req);
       const todos = await Todo.find();
 
       res.json(todos);
@@ -65,8 +63,6 @@ export class TodoController {
 
   static async createTodo(req: Request, res: Response, next: NextFunction) {
     try {
-      validateRequest(req);
-
       const { title, description, deadline, completed } = req.body;
       const todo = Todo.build({ title, description, deadline, completed });
       await todo.save();
@@ -114,8 +110,6 @@ export class TodoController {
 
   static async deleteTodoById(req: Request, res: Response, next: NextFunction) {
     try {
-      validateRequest(req);
-
       const id = req.params.id;
       const deletedTodo = await Todo.findByIdAndDelete(id);
 
