@@ -1,8 +1,15 @@
 import mongoose from 'mongoose';
+import { DatabaseConnectionError } from '../errors/database-connection-error';
 
-mongoose.connect(process.env.DB_URL || '');
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URL || '');
 
-const db = mongoose.connection;
-db.once('open', () => {
-  console.log('Database connected!');
-});
+    console.log('Database connected!');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw new DatabaseConnectionError();
+  }
+};
+
+export default connectDB;
