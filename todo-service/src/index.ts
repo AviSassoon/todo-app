@@ -8,23 +8,27 @@ import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found-error';
 
 const startServer = async () => {
-  const app = express();
-  app.use(express.json());
-  app.use(cors());
-  app.use(todoRouter);
+  try {
+    const app = express();
+    app.use(express.json());
+    app.use(cors());
+    app.use(todoRouter);
 
-  const port = process.env.PORT || 3000;
-  await connectDB();
+    const port = process.env.PORT || 3000;
+    await connectDB();
 
-  app.all('*', async (req: Request, res: Response, next: NextFunction) => {
-    next(new NotFoundError());
-  });
+    app.all('*', async (req: Request, res: Response, next: NextFunction) => {
+      next(new NotFoundError());
+    });
 
-  app.use(errorHandler);
+    app.use(errorHandler);
 
-  app.listen(port, () => {
-    console.log(`Server is running at port: ${port}`);
-  });
+    app.listen(port, () => {
+      console.log(`Server is running at port: ${port}`);
+    });
+  } catch (error) {
+    console.error('Error starting the server:', error);
+  }
 };
 
 process
